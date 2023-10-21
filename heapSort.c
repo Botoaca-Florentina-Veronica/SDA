@@ -53,15 +53,16 @@ void heapSort(int arr[], int N)
         //catre varful arborelui, pentru a analiza toti parintii
 		heapify(arr, N, i);
     }
-	// Heap sort
+	
+    // Heap sort
     // sort the max heap
-	for (i=N; i>=1; i--) 
+    for (i=N; i>=1; i--) 
     {
         // Move the current root (maximum element) to the end
-		swap(&arr[0], &arr[i]);
-		//aici practic voi aplica heapify catre toate nodurile din arbore ramase
-		heapify(arr, i, 0);
-	}
+	swap(&arr[0], &arr[i]);
+	//aici practic voi aplica heapify catre toate nodurile din arbore ramase
+	heapify(arr, i, 0);
+    }
 }
 
 void printArray(int arr[], int N)
