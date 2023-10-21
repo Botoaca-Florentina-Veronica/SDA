@@ -60,7 +60,7 @@ void heapSort(int arr[], int N)
     {
         // Move the current root (maximum element) to the end
 	swap(&arr[0], &arr[i]);
-	//aici practic voi aplica heapify catre toate nodurile din arbore ramase
+	// again heapify the max heap from the root 
 	heapify(arr, i, 0);
     }
 }
