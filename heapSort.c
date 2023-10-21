@@ -31,9 +31,10 @@ void heapify(int arr[], int N, int i)
 		largest = right;
     }
 	// Swap and continue heapifying if root is not largest
-	// If largest is not root
+	// If largest is not root:
 	if (largest != i) 
     {
+        //aici practic ajung daca am gasit intre copii unul mai mare decat parintele, asa ca fac swap
     	swap(&arr[i], &arr[largest]);
 		// Recursively heapify the affected sub-tree
 		heapify(arr, N, largest);
@@ -41,6 +42,7 @@ void heapify(int arr[], int N, int i)
 }
 
 // Main function to do heap sort
+/* sorts the given array of n size */
 void heapSort(int arr[], int N)
 {
     int i;
@@ -52,12 +54,12 @@ void heapSort(int arr[], int N)
 		heapify(arr, N, i);
     }
 	// Heap sort
+    // sort the max heap
 	for (i=N; i>=1; i--) 
     {
+        // Move the current root (maximum element) to the end
 		swap(&arr[0], &arr[i]);
-		// Heapify root element
-		// to get highest element at
-		// root again
+		//aici practic voi aplica heapify catre toate nodurile din arbore ramase
 		heapify(arr, i, 0);
 	}
 }
