@@ -30,15 +30,15 @@ void heapify(int arr[], int N, int i)
     {
 		largest = right;
     }
-	// Swap and continue heapifying if root is not largest
-	// If largest is not root:
-	if (largest != i) 
+    // Swap and continue heapifying if root is not largest
+    // If largest is not root:
+    if (largest != i) 
     {
         //aici practic ajung daca am gasit intre copii unul mai mare decat parintele, asa ca fac swap
     	swap(&arr[i], &arr[largest]);
-		// Recursively heapify the affected sub-tree
-		heapify(arr, N, largest);
-	}
+	// Recursively heapify the affected sub-tree
+	heapify(arr, N, largest);
+     }
 }
 
 // Main function to do heap sort
