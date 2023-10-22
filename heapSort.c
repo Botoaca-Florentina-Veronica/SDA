@@ -13,6 +13,7 @@ void swap(int* a, int* b)
 
 void heapify(int arr[], int N, int i)
 {
+    //heapify imi face practic doar o operatie, imi verifica copiii unui parinte, iar daca unul e mai mare decat acesta, face swap	
     int largest = i;
     int left = 2*i;
     int right = 2*i+1;
@@ -35,7 +36,6 @@ void heapify(int arr[], int N, int i)
      }
 }
 
-// Main function to do heap sort
 /* sorts the given array of n size */
 void heapSort(int arr[], int N)
 {
@@ -44,8 +44,8 @@ void heapSort(int arr[], int N)
     for (i=N/2-1; i>=0; i--)
     {
 	heapify(arr, N, i);
+	//de fiecare data cand am i--, ma voi apropia de varful arborelui, si ma voi asigura ca nodurile sunt sortate conform (max)heapify
     }
-    //aici cand ies din functie inseamna ca am sortat bine un singur parinte si copii lui
 	
     //acum pentru a pune maximele sortate in vector:
     for (i=N-1; i>=0; i--) 
