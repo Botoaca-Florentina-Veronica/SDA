@@ -51,10 +51,11 @@ int partition(int arr[], int low, int high)
             j--;
         }while(arr[j]>arr[pivot]);
         
-        if(i<j)
+        if(i>j)
         {
-            swap(&arr[i], &arr[j]);
+            return j;
         }
+        swap(&arr[i], &arr[j]);
     }
     swap(&arr[pivot], &arr[j]);
     return j;
