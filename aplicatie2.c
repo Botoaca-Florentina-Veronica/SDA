@@ -106,16 +106,21 @@ void verificare(Zbor_t *zbor, int rezervare_id)
         printf("Rezervarea cu ID-ul %d nu a fost gasita.\n", rezervare_id);
         return;
     }
-    while (curr != NULL && curr->rezervare_id != rezervare_id) 
+    while (curr != NULL) 
 	{
+        if(curr->rezervare_id == rezervare_id)
+        {
+            //daca am ajuns aici, inseamna ca am gasit id-ul pasagerului cautat, deci mai departe le voi afisa:
+            printf("Detalii rezervare pentru ID-ul %d:\n", rezervare_id);
+            printf("Nume pasager: %s\n", curr->nume);
+            return;
+        }
+        //daca nu am gasit pasagerul cautat, inseamna ca nu intru in conditia de mai sus ca sa ies din bucla, deci continui parcurgerea:
         curr = curr->link;
     }
-    //daca ies din bucla while, inseamna ca am gasit id-ul pasagerului cautat, deci mai departe le voi afisa:
-    printf("Detalii rezervare pentru ID-ul %d:\n", rezervare_id);
-    printf("Nume pasager: %s\n", curr->nume);
 }
 
-void adaugaZbor(Zbor_t **zbor, const char nume_zbor[50]) 
+void adaugaZbor(Zbor_t **zbor,  char nume_zbor[50]) 
 {
     Zbor_t *newnode = (Zbor_t *)malloc(sizeof(Zbor_t));
     if (newnode == NULL) 
@@ -142,7 +147,7 @@ int main(void)
     anulare_rezervare(zbor, 1);
     verificare(zbor, 2);
 
-    /*
+    
     // Eliberam memoria
     while (zbor != NULL)
      {
@@ -156,10 +161,9 @@ int main(void)
             pasager = pasager->link;
             free(pasager_temp);
         }
-
         free(temp);
     }
-    */
-   
+    
+
     return 0;
 }
