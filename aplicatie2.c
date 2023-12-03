@@ -17,7 +17,7 @@ S2. Să se extindă programul precedent, considerînd că pot exista oricâte zb
 
 typedef struct Pasager 
 {
-    char nume[50];
+    char *nume;
     int rezervare_id;
     struct Pasager *link;
 } Pasager;
@@ -30,24 +30,43 @@ typedef struct Zbor
 } Zbor_t;
 
 
-void rezervare_bilet(Zbor_t *zbor, const char *nume_pasager) 
+void rezervare_bilet(Zbor_t *zbor, const char *nume_pasager)
 {
     Pasager *pasager_nou;
     pasager_nou = (Pasager *)malloc(sizeof(Pasager));
+
+    if (pasager_nou == NULL)
+    {
+        printf("Eroare la alocarea dinamica a memoriei pentru pasager!\n");
+        exit(1);
+    }
+
+    // Alocare spațiu pentru numele pasagerului
+    pasager_nou->nume = (char *)malloc(strlen(nume_pasager) + 1);
+    if (pasager_nou->nume == NULL)
+    {
+        printf("Eroare la alocarea dinamica a memoriei pentru nume_pasager!\n");
+        free(pasager_nou);
+        exit(1);
+    }
+
     strcpy(pasager_nou->nume, nume_pasager);
-    if (zbor->rezervari == NULL) 
+
+    if (zbor->rezervari == NULL)
     {
         pasager_nou->rezervare_id = 1;
         pasager_nou->link = NULL;
-    } 
-    else 
+    }
+    else
     {
         pasager_nou->rezervare_id = zbor->rezervari->rezervare_id + 1;
         pasager_nou->link = zbor->rezervari;
     }
+
     zbor->rezervari = pasager_nou;
     printf("Bilet rezervat cu succes pentru %s la zborul %s!\n", nume_pasager, zbor->nume_zbor);
 }
+
 
 // Functie pentru anularea unei rezervari
 void anulare_rezervare(Zbor_t *zbor, int rezervare_id) 
@@ -64,16 +83,18 @@ void anulare_rezervare(Zbor_t *zbor, int rezervare_id)
     }
 
     //cat timp nu ajugem la finalul listei, iar nodul nostru contine id-ul diferit de cel cautat, parcurgem lista:
+    Pasager *head = curr;
     while (curr != NULL) 
 	{
         if(curr->rezervare_id != rezervare_id)
         {
             if (prev == NULL) 
             {
-                curr = curr->link;
+                head = curr->link;
                 free(curr);
+                curr = head;
                 //daca chiar capul listei este chiar nodul cautat atunci il vom sterge
-                //intai vom schimba adresa la care pointer ul head  "pointeaza" pentru ca daca o facem inainte
+                //intai vom schimba adresa la care pointer ul head  "pointeaza" pentru ca daca o facem după
                 //riscam sa pierdem informatia pe care acesta o contine
                 //si astfel sa pierdem legaturile cu celelalte elemente ale listei
             }
@@ -113,6 +134,10 @@ void verificare(Zbor_t *zbor, int rezervare_id)
             //daca am ajuns aici, inseamna ca am gasit id-ul pasagerului cautat, deci mai departe le voi afisa:
             printf("Detalii rezervare pentru ID-ul %d:\n", rezervare_id);
             printf("Nume pasager: %s\n", curr->nume);
+
+            // Adaugă instrucțiuni de debug pentru a verifica starea variabilelor
+            printf("Adresa curenta: %p\n", (void *)curr);
+            printf("Adresa nume: %p\n", (void *)curr->nume);
             return;
         }
         //daca nu am gasit pasagerul cautat, inseamna ca nu intru in conditia de mai sus ca sa ies din bucla, deci continui parcurgerea:
