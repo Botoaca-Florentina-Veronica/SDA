@@ -33,6 +33,7 @@ void heapify(int arr[], int N, int i)
 	heapify(arr, N, largest);
 	//aici cand apelez functia practic parcurg iar arborele la exact acelas nod, dar acum nu voi mai 
 	//avea nevoie de swap fiindca deja am sortat nodurile corect, deci voi iesi din functie
+	//fac acest lucru deoarece vreau sa verific daca in urma swap-ului de mai sus mi s-au schimbat alti copii ai vreunui parinte deja parcursi
      }
 }
 
