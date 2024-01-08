@@ -31,9 +31,10 @@ void heapify(int arr[], int N, int i)
         //aici practic ajung daca am gasit intre copii unul mai mare decat parintele, asa ca fac swap
     	swap(&arr[i], &arr[largest]);
 	heapify(arr, N, largest);
-	//aici cand apelez functia practic parcurg iar arborele la exact acelas nod, dar acum nu voi mai 
-	//avea nevoie de swap fiindca deja am sortat nodurile corect, deci voi iesi din functie
-	//fac acest lucru deoarece vreau sa verific daca in urma swap-ului de mai sus mi s-au schimbat alti copii ai vreunui parinte deja parcursi
+	//aici cand apelez functia practic parcurg iar arborele la exact acelas nod
+	//fac acest lucru deoarece vreau sa verific daca in urma swap-ului de mai sus mi s-au schimbat alti copii ai vreunui parinte deja parcurs
+	//daca cumva voi gasi alti copii mai mari decat parintii, se va realiza alt swap, urmat de alta verificare, pana cand intregul nod cu toti copiii sunt
+	//corect aranjati
      }
 }
 
