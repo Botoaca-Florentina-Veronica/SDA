@@ -95,6 +95,50 @@ void removeProductFromAllStores(magazin_t *head, int cod)
     }
 }
 
+
+/*
+void removeProductFromAllStores(magazin_t *head, int cod)
+{
+    magazin_t *store;
+    store = head;
+    while(store!=NULL)
+    {
+        //parcurgem fiecare magazin pentru a vedea daca produsul cautat se afla in vreunul din ele
+        produs_t *curr, *prev;
+        curr = store->produse;
+        prev=NULL;
+
+        while(curr!=NULL)
+        {
+            if(curr->cod == cod)
+            {
+                //inseamna ca am gasit produsul cautat, deci il vom tratata din 2 perspective
+                //1. produsul este chiar primul din lista de produse(capul listei)
+                if(prev == NULL)
+                {
+                    //atunci vom transforma nodul urmator dupa cel curent(curr->link) in capul listei
+                    store->produse = curr->link;
+                    free(curr);
+                    curr = store->produse;
+                } 
+                else
+                {
+                    prev->link = curr->link;
+                    free(curr);
+                    curr = prev->link;
+                }
+            }
+            else
+            {
+                prev=curr;
+                curr=curr->link;
+            }
+        }
+        store = store->link;
+    }
+}
+*/
+
 // Funcție pentru a afișa structura multilistă
 void printMultilist(magazin_t *head) 
 {
