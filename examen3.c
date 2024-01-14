@@ -52,6 +52,7 @@ void printMultilist(conferinta_t *head)
             printf("\tNume student: %s, Email: %s\n", studentPtr->nume, studentPtr->email);
             studentPtr = studentPtr->link;
         }
+        printf("\n");
         ptr = ptr->link;
     }
     printf("\n");
@@ -165,12 +166,11 @@ void eliberareMemorie(conferinta_t *head)
 
 int main(void) 
 {
-    conferinta_t *head = NULL;
     conferinta_t *c1, *c2, *c3;
-    c1=c2=c3=head;
+    c1=c2=c3=NULL;
 
     // Adaugare studenti la conferinte
-    c1 = adaugaConferinta(head, 1, 20220101, "Gazda1");
+    c1 = adaugaConferinta(c1, 1, 20220101, "Gazda1");
     adaugaStudentLaConferinta(c1, "Student1", "student1@example.com");
     adaugaStudentLaConferinta(c1, "Student2", "student2@example.com");
     adaugaStudentLaConferinta(c1, "Student3", "student3@example.com");
@@ -206,6 +206,6 @@ int main(void)
     printMultilist(c1);
 
     // Eliberare memorie
-    eliberareMemorie(head);
+    eliberareMemorie(c1);
     return 0;
 }
