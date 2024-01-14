@@ -118,6 +118,8 @@ void modificareEmailParticipant(int ID, conferinta_t *head, const char *nume, co
     {
         ptr = ptr->link;
     }
+   //aici practic am parcurs lista de conferinte pentru a afla care este cea cu ID-ul dat ca parametru
+   //cand ptr->ID == ID, bucla se opreste, iar in ptr este stocata conferinta cautata
 
     if (ptr != NULL) 
     {
