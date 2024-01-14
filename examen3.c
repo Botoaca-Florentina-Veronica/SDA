@@ -36,7 +36,7 @@ typedef struct conferinta {
     struct conferinta *link;
 } conferinta_t;
 
-// Functie pentru afisarea multilistei
+
 void printMultilist(conferinta_t *head) 
 {
     conferinta_t *ptr;
@@ -57,7 +57,7 @@ void printMultilist(conferinta_t *head)
     printf("\n");
 }
 
-// Functie pentru adaugarea unui student la o conferinta
+
 void adaugaStudentLaConferinta(conferinta_t *conferinta, const char *nume, const char *email) 
 {
     student_t *participantNou = (student_t *)malloc(sizeof(student_t));
@@ -109,7 +109,7 @@ conferinta_t *adaugaConferinta(conferinta_t *head, int ID, int data, const char 
     }
 }
 
-// Functie pentru modificarea email-ului unui participant
+
 void modificareEmailParticipant(int ID, conferinta_t *head, const char *nume, const char *email) 
 {
     conferinta_t *ptr;
@@ -143,7 +143,7 @@ void modificareEmailParticipant(int ID, conferinta_t *head, const char *nume, co
     }
 }
 
-// Functie pentru eliberarea memoriei alocate pentru multilista
+
 void eliberareMemorie(conferinta_t *head) 
 {
     conferinta_t *conferintaPtr = head;
