@@ -47,12 +47,6 @@ void bubbleSort(student arr[], int N)
 	}
 }
 
-// Funcție pentru mutarea eficientă a studenților premiați pe primele poziții
-void mutare_premii_primul(student arr[], int N) 
-{
-	// Sortăm vectorul utilizând Bubble Sort
-	bubbleSort(arr, N);
-}
 
 int main(void)
 {
@@ -64,7 +58,7 @@ int main(void)
 	nrStudenti = sizeof(studenti) / sizeof(studenti[0]);
 	//sau nrStudenti = 5;
 
-	mutare_premii_primul(studenti, nrStudenti);
+	bubbleSort(studenti, nrStudenti);
 	printf("Dupa mutarea studentilor premiati pe primele pozitii:\n");
 	int i;
 	for (i = 0; i < nrStudenti; i++) 
