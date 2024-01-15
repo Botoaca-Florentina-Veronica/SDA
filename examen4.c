@@ -4,10 +4,10 @@
 Ştiind ca tabloul are dimensiunea N, sa se implementeze cate o funcție pentru :
 a.Mutarea, intr - un mod cat mai eficient, pe primele poziții din vector a studentilor care au primit premii,
 b.Sortarea in ordine invers alfabetica dupa nume, a studentilor premiati(doar studentii premiati vor fi sortati).
-Sa se considere un exemplu de tablou cu minim 5 astfel de filme si sa se exemplifice cum va arata tabloul dupa apelul 
+Sa se considere un exemplu de tablou cu minim 5 astfel de filme si sa se exemplifice cum va arata tabloul dupa apelul
 fiecareia din functiile de mai sus.
 Nota :
-	Este obligatorie comentarea algoritmului si specificarea complexitatii acestuia in termeni de O(f(n)), 
+	Este obligatorie comentarea algoritmului si specificarea complexitatii acestuia in termeni de O(f(n)),
 	comentarea structurilor de date alese, precum si justificarea alegerii acestora.
 	Este obligatorie exemplificarea efectului apelului functiilor implementate pe un exemplu ales.scrie codul in C
 */
@@ -23,7 +23,7 @@ typedef struct student
 }student;
 
 // Funcție pentru a schimba pozițiile a două structuri student
-void swap(student* a, student* b) 
+void swap(student* a, student* b)
 {
 	student temp = *a;
 	*a = *b;
@@ -31,15 +31,15 @@ void swap(student* a, student* b)
 }
 
 // Funcție Bubble Sort
-void bubbleSort(student arr[], int N) 
+void bubbleSort(student arr[], int N)
 {
 	int i, j;
-	for (i=0; i < N - 1; i++) 
+	for (i = 0; i < N - 1; i++)
 	{
-		for (j=0; j < N - i - 1; j++) 
+		for (j = 0; j < N - i - 1; j++)
 		{
 			// Comparăm în funcție de premii și nume
-			if (arr[j].premii < arr[j + 1].premii || (arr[j].premii == arr[j + 1].premii && strcmp(arr[j].nume, arr[j + 1].nume) < 0)) 
+			if (arr[j].premii < arr[j + 1].premii || (arr[j].premii == arr[j + 1].premii && strcmp(arr[j].nume, arr[j + 1].nume) < 0))
 			{
 				swap(&arr[j], &arr[j + 1]);
 			}
@@ -54,14 +54,20 @@ int main(void)
 	student studenti[] = { {"Ana", 20, 1}, {"Vera", 25, 1}, {"Robert", 18, 0},
 		{"Claudiu", 30, 0}, {"Oana", 21, 1} };
 
-	int nrStudenti;
+	int nrStudenti, i;
 	nrStudenti = sizeof(studenti) / sizeof(studenti[0]);
 	//sau nrStudenti = 5;
+	printf("Lista initiala de studenti");
+	for (i = 0; i < nrStudenti; i++)
+	{
+		printf("Nume: %s, Varsta: %d, Premii: %d\n", studenti[i].nume, studenti[i].varsta, studenti[i].premii);
+	}
+	printf("\n\n");
+
 
 	bubbleSort(studenti, nrStudenti);
 	printf("Dupa mutarea studentilor premiati pe primele pozitii:\n");
-	int i;
-	for (i = 0; i < nrStudenti; i++) 
+	for (i = 0; i < nrStudenti; i++)
 	{
 		printf("Nume: %s, Varsta: %d, Premii: %d\n", studenti[i].nume, studenti[i].varsta, studenti[i].premii);
 	}
