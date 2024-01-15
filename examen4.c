@@ -25,13 +25,13 @@ typedef struct student
 // Funcție pentru a schimba pozițiile a două structuri student
 void swap(student* a, student* b) 
 {
-	struct student temp = *a;
+	student temp = *a;
 	*a = *b;
 	*b = temp;
 }
 
 // Funcție Bubble Sort
-void bubbleSort(struct student arr[], int N) 
+void bubbleSort(student arr[], int N) 
 {
 	int i, j;
 	for (i=0; i < N - 1; i++) 
@@ -48,7 +48,7 @@ void bubbleSort(struct student arr[], int N)
 }
 
 // Funcție pentru mutarea eficientă a studenților premiați pe primele poziții
-void mutare_premii_primul(struct student arr[], int N) 
+void mutare_premii_primul(student arr[], int N) 
 {
 	// Sortăm vectorul utilizând Bubble Sort
 	bubbleSort(arr, N);
