@@ -25,6 +25,7 @@ typedef struct agenda
 	int venit;
 }agenda;
 
+//swap special pentru quicksort
 void swap(agenda agende[], int low, int high)
 {
     agenda temp;
@@ -91,6 +92,48 @@ void QuickSort(agenda agende[], int low, int high)
         QuickSort(agende, j + 1, high);
     }
 }
+
+
+//implementare quicksort de la profa:
+/*void QuickSort(agenda agende[], int prim, int ultim)
+{
+	int stanga = prim + 1;
+	int dreapta = ultim;
+    int pivot = (stanga + dreapta)/2;
+	//alegere pivot
+	swap(agende, prim, pivot);
+	//mutare pivot pe prima pozitie
+	while (stanga <= dreapta) //partitionare
+	{
+		while (strcmp(agende[stanga].nume, agende[pivot].nume) < 0)
+		{
+            stanga++;
+        }
+		while (strcmp(agende[dreapta].nume, agende[pivot].nume) > 0)
+		{
+            dreapta--;
+        }
+		if (stanga < dreapta)
+		{
+            swap(agende, stanga++ ,dreapta--);
+        }
+		else
+		{
+            stanga++;
+        }
+	}
+	//mutare pivot la locul sau final
+	swap(agende, dreapta, prim);
+	//apelurile recursive
+	if (prim < dreapta - 1)
+    {	
+        QuickSort(agende, prim, dreapta - 1);
+    }
+	if (dreapta + 1 < ultim)
+	{
+        QuickSort(agende, dreapta + 1, ultim);
+    }
+}*/
 
 // Functie pentru mutarea pe ultimele pozitii din vector a primelor doua persoane cu un venit mai mic de 1000
 void moveLowIncomeToEnd(agenda agende[], int N)
