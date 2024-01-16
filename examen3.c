@@ -1,14 +1,14 @@
 /*
    Fie un sistem de gestionare a unor sesiuni de conferințe online Zoom.
-O conferinţă este caracterizată printr-un ID unic de conferință (Meeting ID), data desfasurarii si numele persoanei ce gazduieste conferinta. 
+O conferinţă este caracterizată printr-un ID unic de conferință (Meeting ID), data desfasurarii si numele persoanei ce gazduieste conferinta.
    Intr-o sesiune pot participa mai multi studenti, un student fiind caracterizat printr-un nume si eu email personal.
-Sa se scrie si sa se implementeze o structura multilista adecvată pentru gestionarea acestor conferințe. 
-   Structura va avea urmatoarea componenta: Fiecare conferinţă reprezintă o intrare separată într-o lista principală, si fiecare 
+Sa se scrie si sa se implementeze o structura multilista adecvată pentru gestionarea acestor conferințe.
+   Structura va avea urmatoarea componenta: Fiecare conferinţă reprezintă o intrare separată într-o lista principală, si fiecare
 conferință conține o listă secundară ordonată alfabetic după numele studenţilor (cel putin una din liste va fi implementata dinamic).
 Sa se implementeze structurile de date necesare si urmatoarele functionalitati:
-• Modificare_email_participant(id_conferinta, nume_student, email_nou) - pentru un anumit student identificat dupa nume, dintr-o anumita conferinta, 
+• Modificare_email_participant(id_conferinta, nume_student, email_nou) - pentru un anumit student identificat dupa nume, dintr-o anumita conferinta,
 se inlocuieste vechiul email cu cel nou dat ca parametru
-   Sa se aleaga un exemplu de lista care sa cuprinda cel putin 3 conferințe, fiecare cu cel putin 5 studenți. 
+   Sa se aleaga un exemplu de lista care sa cuprinda cel putin 3 conferințe, fiecare cu cel putin 5 studenți.
    Să se reprezinte grafic structura multilistă pentru acest exemplu, inainte si dupa apelul functiei Acceptare în meeting.
 
 Nota:
@@ -25,29 +25,29 @@ precum si justificarea alegerii acestora.
 typedef struct student {
     char nume[35];
     char email[40];
-    struct student *link;
+    struct student* link;
 } student_t;
 
 typedef struct conferinta {
     int ID;
     int data;
     char numeGazda[35];
-    student_t *studenti; // Lista dinamica de studenti
-    struct conferinta *link;
+    student_t* studenti; // Lista dinamica de studenti
+    struct conferinta* link;
 } conferinta_t;
 
 
-void printMultilist(conferinta_t *head) 
+void printMultilist(conferinta_t* head)
 {
-    conferinta_t *ptr;
+    conferinta_t* ptr;
     ptr = head;
     printf("Multilista cu studentii participanti la conferinte:\n");
 
-    while (ptr != NULL) 
+    while (ptr != NULL)
     {
         printf("ID Conferinta: %d, Gazda: %s, Data: %d\n", ptr->ID, ptr->numeGazda, ptr->data);
-        student_t *studentPtr = ptr->studenti;
-        while (studentPtr != NULL) 
+        student_t* studentPtr = ptr->studenti;
+        while (studentPtr != NULL)
         {
             printf("\tNume student: %s, Email: %s\n", studentPtr->nume, studentPtr->email);
             studentPtr = studentPtr->link;
@@ -59,31 +59,30 @@ void printMultilist(conferinta_t *head)
 }
 
 
-void adaugaStudentLaConferinta(conferinta_t *conferinta, const char *nume, const char *email) 
+void adaugaStudentLaConferinta(conferinta_t* conferinta, const char* nume, const char* email)
 {
-    student_t *participantNou = (student_t *)malloc(sizeof(student_t));
+    student_t* participantNou = (student_t*)malloc(sizeof(student_t));
     strncpy(participantNou->nume, nume, 35);
     strncpy(participantNou->email, email, 40);
     participantNou->link = NULL;
 
     // Daca nu exista studenti in conferinta, adauga primul student
-    if (conferinta->studenti == NULL) 
+    if (conferinta->studenti == NULL)
     {
         conferinta->studenti = participantNou;
         return;
-    } 
+    }
 
     // Altfel, gaseste ultimul student si adauga noul student la sfarsitul listei
-    student_t *studentPtr = conferinta->studenti;
-    while (studentPtr->link != NULL) 
+    student_t* studentPtr = conferinta->studenti;
+    while (studentPtr->link != NULL)
     {
         studentPtr = studentPtr->link;
     }
     studentPtr->link = participantNou;
-
 }
 
-// Functie pentru crearea unei conferinte si adaugarea ei la sfarsitul listei
+
 conferinta_t *adaugaConferinta(conferinta_t *head, int ID, int data, const char *numeGazda) {
     conferinta_t *conferintaNoua = (conferinta_t *)malloc(sizeof(conferinta_t));
     conferintaNoua->ID = ID;
@@ -111,63 +110,54 @@ conferinta_t *adaugaConferinta(conferinta_t *head, int ID, int data, const char 
 }
 
 
-void modificareEmailParticipant(int ID, conferinta_t *head, const char *nume, const char *email) 
+ void modificareEmailParticipant(int ID, conferinta_t *head, const char *nume, const char *emailNou)
+    {
+        conferinta_t* curr;
+        curr = head;
+        while (curr != NULL)
+        {
+            if (curr->ID == ID)
+            {
+                //daca suntem in conferinta cu ID-ul dat ca parametru, atunci putem cauta studentul in aceasta lista
+                student_t* student = curr->studenti;
+                while (student != NULL)
+                {
+                    if (strcmp(student->nume, nume) == 0)  //adica daca am gasit studentul cu emailul pe care vrem sa il modificam
+                    {
+                        strncpy(student->email, emailNou, 40);
+                    }
+                    //daca studentul nu e cel cautat, mergem mai departe
+                    student = student->link;
+                }
+            }
+            curr = curr->link;
+        }
+    }
+
+
+void eliberareMemorie(conferinta_t* head)
 {
-    conferinta_t *ptr;
-    ptr = head;
-    while (ptr!= NULL && ptr->ID != ID) 
+    conferinta_t* conferintaPtr = head;
+    while (conferintaPtr != NULL)
     {
-        ptr = ptr->link;
-    }
-   //aici practic am parcurs lista de conferinte pentru a afla care este cea cu ID-ul dat ca parametru
-   //cand ptr->ID == ID, bucla se opreste, iar in ptr este stocata conferinta cautata
-
-    if (ptr != NULL) 
-    {
-        student_t *studentPtr = ptr->studenti;
-        while (studentPtr != NULL && strcmp(studentPtr->nume, nume) != 0) 
+        student_t* studentPtr = conferintaPtr->studenti;
+        while (studentPtr != NULL)
         {
-            studentPtr = studentPtr->link;
-        }
-        if (studentPtr != NULL) 
-        {
-            strncpy(studentPtr->email, email, 40);
-        }
-        else
-        {
-            printf("Student not found in the specified conference.\n");
-        }
-    }
-    else
-    {
-        printf("Conference not found.\n");
-    }
-}
-
-
-void eliberareMemorie(conferinta_t *head) 
-{
-    conferinta_t *conferintaPtr = head;
-    while (conferintaPtr != NULL) 
-    {
-        student_t *studentPtr = conferintaPtr->studenti;
-        while (studentPtr != NULL) 
-        {
-            student_t *temp = studentPtr;
+            student_t* temp = studentPtr;
             studentPtr = studentPtr->link;
             free(temp);
         }
 
-        conferinta_t *temp = conferintaPtr;
+        conferinta_t* temp = conferintaPtr;
         conferintaPtr = conferintaPtr->link;
         free(temp);
     }
 }
 
-int main(void) 
+int main(void)
 {
-    conferinta_t *c1, *c2, *c3;
-    c1=c2=c3=NULL;
+    conferinta_t* c1, * c2, * c3;
+    c1 = c2 = c3 = NULL;
 
     // Adaugare studenti la conferinte
     c1 = adaugaConferinta(c1, 1, 20220101, "Gazda1");
