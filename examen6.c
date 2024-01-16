@@ -176,7 +176,7 @@ int main(void)
     }
 
     // Sortam eficient in ordine alfabetica persoanele cu varsta intre 30 si 40 de ani
-	QuickSort(agende, 0, N - 1);
+	QuickSort(agende, 0, N - 1);  //nu mi se specifica unde sa pozitionez persoanele care nu se incadreaza in acest interval de varsta, asa ca voi ordona toate persoanele alfabetic
 
 	// Afisam tabloul dupa sortarea persoanelor cu varsta intre 30 si 40 de ani
     printf("\nTabloul dupa sortarea persoanelor cu varsta intre 30 si 40 de ani:\n");
