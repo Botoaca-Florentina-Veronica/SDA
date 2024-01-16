@@ -99,17 +99,14 @@ void QuickSort(agenda agende[], int low, int high)
 {
 	int stanga = prim + 1;
 	int dreapta = ultim;
-    int pivot = (stanga + dreapta)/2;
-	//alegere pivot
-	swap(agende, prim, pivot);
-	//mutare pivot pe prima pozitie
+    int pivot = prim;
 	while (stanga <= dreapta) //partitionare
 	{
-		while (strcmp(agende[stanga].nume, agende[pivot].nume) < 0)
+		while (stanga <= ultim && strcmp(agende[stanga].nume, agende[pivot].nume) < 0)
 		{
             stanga++;
         }
-		while (strcmp(agende[dreapta].nume, agende[pivot].nume) > 0)
+		while (dreapta > prim && strcmp(agende[dreapta].nume, agende[pivot].nume) > 0)
 		{
             dreapta--;
         }
