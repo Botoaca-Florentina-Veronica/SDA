@@ -1,120 +1,116 @@
-/*Fie o aplicatie care gestioneaza o retea de profesionisti din intreaga lume, de tip Linkedin. Pentru o persoana
-se memoreaza un ID(intreg), un nume (max 35 caractere) si o ocupatie (max 35 de caractere), precum si o lista
-de conexiuni profesionale. Sa se scrie si sa se implementeze o structura bazata pe lista simplu inlantuita(dinamica)
-articulata cu tablouri (eficienta din punct de vedere al timpului de rulare) pentru a gestiona persoanele. Structura
-va avea urmatoarea componenta: Fiecare persoana reprezinta un nod intr-o lista, si fiecare persoana contine un tablou
-implementat in mod static, cu conexiunile profesionale pe care le are(colegi de echipa, persoane de la resurse
-umane, etc).
-   Sa se implementeze structurile de date necesare si urmatoare functionalitate:
-* Adaugare conexiune in lista unei persoane(adaugare in lista secundara)
-
-   Sa se aleaga un exemplu de lista care sa cuprinda cel putin 3 persoane, fiecare cu cel putin 5 conexiuni.
-Sa se reprezinte grafic structura multilista pentru acest exemplu, inainte si dupa apelul functiei adaugareConexiune.
-
-   Este obligatorie comentarea algoritmului si specificarea complexitati acestuia in termeni de O(f(n)), comentarea structurilor de date
-alese, precum si justificarea alegerii acestora.
-   Este obligatorie exemplificarea efectului apelului functiilor implementate pe un exemplu ales.*/
+/*
+Fie o aplicatie care gestioneaza o retea de profesionisti din intreaga lume, de tip Linkedin.Pentru o persoana se memoreaza un ID(intreg), un nume(max 35 caractere) si 
+ocupatie(max. 35 de caractere), precum si o lista de conexiuni profesionale.
+Sa se scrie si sa se implementeze o structura bazata pe lista simplu inlantuita(dinamica) articulata cu tablouri(eficienta din punct de vedere al timpului de rulare) pentru a gestiona persoanele.
+Structura va avea urmatoarea componenta : Fiecare persoana reprezinta un nod intr - o lista, si fiecare persoana contine un tablou implementat in mod static, cu conexiunile profesionale pe care 
+le are(colegi de echipa, persoane de la resurse umane, etc).
+Sa se implementeze structurile de date necesare si urmatoarea functionalitate :
+• Adaugare conexiune in lista unei persoane(adaugare in lista secundara)
+Sa se aleaga un exemplu de lista care sa cuprinda cel putin 3 persoane, fiecare cu cel putin 5 conexiuni.Sa se reprezinte grafic structura multilista pentru acest exemplu, inainte si dupa apelul functiei adaugareConexiune.
+Nota :
+	Algoritmul poate fi scris in pseudocod(C like).
+	Este obligatorie comentarea algoritmului si specificarea, complexitatii acestuia in termeni de O(f(n)), comentarea structurilor de date alese, precum si justificarea alegerii acestora.
+	Este obligatorie exemplificarea efectului apelului functiilor implementate pe un exemplu ales.
+	Maximum file size : 5MB, maximum number of files : 3
+*/
 
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
 
-typedef struct conexiune{
-   int count;
-   int IDconexiuni[5];
-}conexiune_t;
-
-typedef struct persoana{
-   int ID;
-   char nume[35];
-   char ocupatie[35];
-   conexiune_t conexiuni; 
-   struct persoana *link;
-}persoana_t;
-
-void adaugareConexiune(persoana_t *persoana, int IDconexiune)
+typedef struct conexiune
 {
-   //verificam daca exista loc in tabloul de conexiuni:
-   if(persoana->conexiuni.count < 10)
-   {
-      persoana->conexiuni.IDconexiuni[persoana->conexiuni.count++] = IDconexiune;
-   }
-   else
-   {
-      printf("Nu se poate adauga conexiunea, lista de conexiuni aferenta este plina!\n");
-   }
+	int IDconexiune;
+	struct conexiune* link;
+}conexiune;
+
+typedef struct persoana
+{
+	int ID;
+	char nume[35];
+	char ocupatie[35];
+	struct persoana* link;
+	conexiune *conexiuni;
+}persoana;
+
+void printMultilist(persoana* head)
+{
+	persoana* curr;
+	curr = head;
+	while (curr != NULL)
+	{
+		printf("ID: %d, nume: %s, ocupatie: %s\n", curr->ID, curr->nume, curr->ocupatie);
+		printf("Conexiuni: \n");
+		conexiune* conex = curr->conexiuni;
+		while (conex != NULL)
+		{
+			printf("%d ", conex->IDconexiune);
+			conex = conex->link;
+		}
+		printf("\n\n");
+		//verificam fiecare persoana pentru a o afisa
+		curr = curr->link;
+	}
+	printf("\n");
 }
 
-void afiseazaDetaliiPersoana(persoana_t *persoana)
+void adaugareConexiuneLaPersoana(persoana* head, int IDconexiune)
 {
-   printf("ID: %d\n", persoana->ID);
-   printf("Nume: %s\n", persoana->nume);
-   printf("Ocupatie: %s\n", persoana->ocupatie);
-   int i;
-   printf("Conexiuni: ");
-   for(i=0; i<persoana->conexiuni.count; i++)
-   {
-      printf("%d ",  persoana->conexiuni.IDconexiuni[i]);
-   }
-   printf("\n\n");
+	conexiune* conexiuneNoua;
+	conexiuneNoua = (conexiune*)malloc(sizeof(conexiune));
+	conexiuneNoua->IDconexiune = IDconexiune;
+	conexiuneNoua->link = NULL;
+
+	if (head->conexiuni == NULL)
+	{
+		head->conexiuni = conexiuneNoua;
+		return;
+	}
+
+	conexiune* lastNode;
+	lastNode = head->conexiuni;
+	while (lastNode->link != NULL)
+	{
+		lastNode = lastNode->link;
+	}
+	lastNode->link = conexiuneNoua;
 }
 
-void printList(persoana_t *head)
+persoana *creearePersoana(int ID, const char* nume, const char* ocupatie) 
 {
-   persoana_t *ptr;
-   ptr = head;
-   while(ptr!=NULL)
-   {
-      afiseazaDetaliiPersoana(ptr);
-      ptr=ptr->link;
-   }
-   printf("\n");
-}
+    persoana* persoanaNoua = (persoana*)malloc(sizeof(persoana));
+    persoanaNoua->ID = ID;
+    strncpy(persoanaNoua->nume, nume, 35);
+    strncpy(persoanaNoua->ocupatie, ocupatie, 35);
+    persoanaNoua->link = NULL;
+    persoanaNoua->conexiuni = NULL;
 
-//functie pentru creearea unei persoane:
-persoana_t *creearePersoana(int ID, const char *nume, const char *ocupatie)
-{
-   persoana_t *newPerson;
-   newPerson = (persoana_t *)malloc(sizeof(persoana_t));
-   newPerson->ID = ID;
-   strncpy(newPerson->nume, nume, 35);
-   strncpy(newPerson->ocupatie, ocupatie, 35);
-   newPerson->conexiuni.count = 0;
-   newPerson->link = NULL;
-   return newPerson;
+    return persoanaNoua;
 }
-
 
 int main(void)
 {
-   persoana_t *pers1 = creearePersoana(1, "Vera", "Inginera");
-   persoana_t *pers2 = creearePersoana(2, "Sandra", "Profesoara");
-   persoana_t *pers3 = creearePersoana(3, "Maria", "Doctor");
+	persoana* p1, * p2, * p3;
+	p1 = p2 = p3 = NULL;
 
-   pers1->link = pers2;
-   pers2->link = pers3;
+	p1 = creearePersoana(1, "Vera", "inginera");
+	p2 = creearePersoana(2, "Sandra", "profesoara");
+	p3 = creearePersoana(3, "Maria", "doctor");
 
-   adaugareConexiune(pers1, 2);
-   adaugareConexiune(pers1, 3);
-   adaugareConexiune(pers2, 1);
-   adaugareConexiune(pers2, 3);
-   adaugareConexiune(pers3, 1);
-   adaugareConexiune(pers3, 2);
+	adaugareConexiuneLaPersoana(p1, 2);
+	adaugareConexiuneLaPersoana(p1, 3);
 
-   // Afisarea structurii inainte de adaugarea conexiunii
-   printf("Inainte de adaugarea conexiunii:\n");
-   printList(pers1);
+	adaugareConexiuneLaPersoana(p2, 1);
+	adaugareConexiuneLaPersoana(p2, 3);
 
-   // Adaugarea unei noi conexiuni
-   adaugareConexiune(pers1, 4);
+	adaugareConexiuneLaPersoana(p3, 1);
+	adaugareConexiuneLaPersoana(p3, 2);
 
-   // Afisarea structurii dupa adaugarea conexiunii
-   printf("Dupa adaugarea conexiunii:\n");
-   printList(pers1);
+	p1->link = p2;
+	p2->link = p3;
 
-   // Eliberarea memoriei la finalul programului
-   free(pers1);
-   free(pers2);
-   free(pers3);
-   return 0;
+	printf("Lista initiala: \n");
+	printMultilist(p1);
+
+	return 0;
 }
