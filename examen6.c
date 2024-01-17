@@ -1,56 +1,53 @@
-/*﻿
-   Fie un tablou de structuri de forma struct agenda{char nume[25]; char telefon[10];int an; int venit}.
-   Ştiind ca tabloul are dimensiunea N, sa se implementeze cate o funcție pentru:
-a. Mutarea pe ultimele poziții din vector a primelor persoane cu un venit mai mic de 1000.
-b. Sortarea eficientă, în ordine alfabetică a numelor, a persoanelor cu vârsta între 30 şi 40 de ani.
-Sa se considere un exemplu de tablou cu minim 5 astfel de agende și sa se exemplifice cum va arata tabloul dupa apelul fiecareia din functiile de mai
-sus.
+/*
+Fie un tablou de structuri de forma struct echipa{char nume[25]; int puncte; int buget, char oras[25]}. Ştiind ca tabloul are dimensiunea N, sa se implementeze cate o funcție pentru:
+a. Mutarea pe primele pozitii din vector a echipelor cu punctaj mai mare decat 45, iar pe ultimele pozitii a celor cu punctaj mai mic decat 20. Algoritmul va avea o complexitate de O(n), si nu va folosi un alt tablou auxiliar;
+b. Sortarea cat mai eficienta a echipelor cu un buget mai mare decat 100 000 (celalalte echipe nu vor fi sortate pastrandu-si aceleasi pozitii in tablou) alfabetica in functie de nume.
+Sa se considere un exemplu de tablou cu minim 5 astfel de echipe și sa se exemplifice cum va arata tabloul dupa apelul fiecareia din functiile de mai sus.
 Nota:
 Algoritmul poate fi scris in pseudocod (C like).
-Este obligatorie comentarea algoritmului si specificarea complexitatii acestuia in termeni de O(f(n)),
-comentarea structurilor de date alese, precum si justificarea alegerii acestora.
+Este obligatorie comentarea algoritmului si specificarea complexitatii acestuia in termeni de O(f(n)), comentarea structurilor de date alese, precum si justificarea alegerii acestora.
 Este obligatorie exemplificarea efectului apelului functiilor implementate pe un exemplu ales.
 */
 
 #include<stdio.h>
-#include<string.h>
 #include<stdlib.h>
+#include<string.h>
 
-typedef struct agenda
+typedef struct echipa
 {
 	char nume[25];
-	char telefon[10];
-	int an;
-	int venit;
-}agenda;
+	int puncte;
+	int buget;
+	char oras[25];
+}echipa;
 
-//swap special pentru quicksort
-void swap(agenda agende[], int low, int high)
+
+void swap(echipa echipe[], int low, int high)
 {
-	agenda temp;
-	temp = agende[low];
-	agende[low] = agende[high];
-	agende[high] = temp;
+	echipa temp;
+	temp = echipe[low];
+	echipe[low] = echipe[high];
+	echipe[high] = temp;
 }
 
-void quicksort(agenda agende[], int prim, int ultim)
+void quicksort(echipa echipe[], int prim, int ultim)
 {
 	int stanga = prim + 1;
 	int dreapta = ultim;
 	int pivot = prim;
 	while (stanga <= dreapta) //partitionare
 	{
-		while (stanga <= ultim && strcmp(agende[stanga].nume, agende[pivot].nume) < 0)
+		while (stanga >= ultim && strcmp(echipe[stanga].nume, echipe[pivot].nume) < 0)
 		{
 			stanga++;
 		}
-		while (dreapta > prim && strcmp(agende[dreapta].nume, agende[pivot].nume) > 0)
+		while (dreapta < prim && strcmp(echipe[dreapta].nume, echipe[pivot].nume) > 0)
 		{
 			dreapta--;
 		}
 		if (stanga < dreapta)
 		{
-			swap(agende, stanga++, dreapta--);
+			swap(echipe, stanga++, dreapta--);
 		}
 		else
 		{
@@ -58,103 +55,99 @@ void quicksort(agenda agende[], int prim, int ultim)
 		}
 	}
 	//mutare pivot la locul sau final
-	swap(agende, dreapta, prim);
+	swap(echipe, dreapta, prim);
 	//apelurile recursive
 	if (prim < dreapta - 1)
 	{
-		quicksort(agende, prim, dreapta - 1);
+		quicksort(echipe, prim, dreapta - 1);
 	}
 	if (dreapta + 1 < ultim)
 	{
-		quicksort(agende, dreapta + 1, ultim);
+		quicksort(echipe, dreapta + 1, ultim);
 	}
 }
 
-
-void afiseazaAgende(agenda agende[], int N)
+// Functie pentru afisarea echipei
+void afiseazaEchipe(echipa echipe[], int N)
 {
 	int i;
 	for (i = 0; i < N; i++)
 	{
-		printf("Nume: %s, numar de telefon: %s, varsta: %d, venit: %d\n", agende[i].nume, 
-			agende[i].telefon, agende[i].an, agende[i].venit);
+		printf("Nume: %s, puncte: %d, buget: %d, oras: %s\n",
+			echipe[i].nume, echipe[i].puncte, echipe[i].buget, echipe[i].oras);
 	}
-	printf("\n");
+	printf("\n\n");
 }
 
-void sortareAlfabetica30_40(agenda agende[], int N) 
-{
-    int pozPrim = 0, pozUltim = N - 1;
-
-    while (pozPrim <= pozUltim) 
-    {
-        while (pozPrim < N && (agende[pozPrim].an < 30 || agende[pozPrim].an > 40)) 
-        {
-            pozPrim++;
-        }
-        while (pozUltim >= 0 && (agende[pozUltim].an < 30 || agende[pozUltim].an > 40)) 
-        {
-            pozUltim--;
-        }
-        if (pozPrim < pozUltim) 
-        {
-            swap(agende, pozPrim++, pozUltim--);
-        } 
-        else 
-        {
-            pozPrim++;
-        }
-    }
-
-    if (pozUltim >= 0) 
-    {  // Verificare pentru a evita accesarea în afara limitelor
-        quicksort(agende, 0, pozUltim);   // Sortează doar segmentul cu vârsta între 30 și 40
-    }
-}
-
-void mutareAgende(agenda agende[], int N)
+void mutareEchipe(echipa echipe[], int N)
 {
 	int pozPrim, pozUltim;
 	pozPrim = 0;
 	pozUltim = N - 1;
 	while (pozPrim <= pozUltim)
 	{
-		while (agende[pozPrim].venit < 1000)  //adica pe primele pozitii vreau sa fie cei cu venituri <1000
+		while (pozPrim < N && echipe[pozPrim].puncte > 45)
 		{
 			pozPrim++;
 		}
-		while (agende[pozUltim].venit > 1000)
+		while (pozUltim >= 0 &&echipe[pozUltim].puncte < 20)
 		{
 			pozUltim--;
 		}
 		if (pozPrim < pozUltim)
 		{
-			swap(agende, pozPrim++, pozUltim--);
+			swap(echipe, pozPrim++, pozUltim--);
 		}
 	}
 }
 
+// Functie pentru sortarea echipelor cu buget mai mare decat 100,000 alfabetic dupa nume
+void sortareAlfabetica(echipa echipe[], int N)
+{
+	int  pozPrim, pozUltim;
+	pozPrim = 0;
+	pozUltim = N - 1;
 
+	while (pozPrim <= pozUltim)
+	{
+		while (pozPrim <N && echipe[pozPrim].buget > 100000)
+		{
+			pozPrim++;
+		}
+		while (pozUltim >= 0 && echipe[pozUltim].buget <= 100000)
+		{
+			pozUltim--;
+		}
+		if (pozPrim < pozUltim)
+		{
+			swap(echipe, pozPrim++, pozUltim--);
+		}
+	}
+
+	if (pozUltim >= 0)
+	{  // Verificare pentru a evita accesarea în afara limitelor
+		quicksort(echipe, 0, pozUltim);   // Sortează doar echipele cu buget >100000
+	}
+}
 
 int main(void)
 {
-	agenda agende[] = { {"Vera", "2470252", 32, 200},
-						{"Sandra", "2936421", 34, 1500},
-						{"Bogdan", "8796856", 35, 300},
-						{"Anca", "49623234", 67, 4000},
-						{"Andrei", "40283471", 31, 590},
-	};
+	echipa echipe[] = { {"fcsb", 35, 150000, "Bucuresti"},
+					   {"upt", 66, 200, "Timisoara"},
+					   {"cluj", 112, 4000, "Cluj-Napoca"},
+					   {"dinamo", 3, 3000, "Ilfov"},
+					   {"real madrid", 8, 300000, "Severin"} };
 	int N;
-	N = sizeof(agende) / sizeof(agende[0]);
-	printf("Lista de agende initiala: \n");
-	afiseazaAgende(agende, N);
+	N = sizeof(echipe) / sizeof(echipe[0]);
+	printf("Lista initiala cu echipe:\n");
+	afiseazaEchipe(echipe, N);
 
-	printf("Lista de agende sortata alfabetic: \n");
-	sortareAlfabetica30_40(agende, N);
-	afiseazaAgende(agende, N);
+	printf("Afisarea echipelor care au peste 45 de puncte pe primele pozitii, iar sub 20 pe ultimele pozitii:\n");
+	mutareEchipe(echipe, N);
+	afiseazaEchipe(echipe, N);
 
-    printf("Lista de agende in care veniturile <1000 sunt prioritare: \n");
-    mutareAgende(agende, N);
-    afiseazaAgende(agende, N);
+	printf("Afisarea echipelor alfabetic: \n");
+	sortareAlfabetica(echipe, N);
+	afiseazaEchipe(echipe, N);
 	return 0;
 }
