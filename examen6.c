@@ -1,17 +1,16 @@
 /*﻿
-   Fie un tablou de structuri de forma struct agenda{char nume[25]; char telefon[10];int an; int venit}. 
+   Fie un tablou de structuri de forma struct agenda{char nume[25]; char telefon[10];int an; int venit}.
    Ştiind ca tabloul are dimensiunea N, sa se implementeze cate o funcție pentru:
-a. Mutarea pe ultimele poziții din vector a primelor două persoane cu un venit mai mic de 1000.
+a. Mutarea pe ultimele poziții din vector a primelor persoane cu un venit mai mic de 1000.
 b. Sortarea eficientă, în ordine alfabetică a numelor, a persoanelor cu vârsta între 30 şi 40 de ani.
 Sa se considere un exemplu de tablou cu minim 5 astfel de agende și sa se exemplifice cum va arata tabloul dupa apelul fiecareia din functiile de mai
 sus.
 Nota:
 Algoritmul poate fi scris in pseudocod (C like).
-Este obligatorie comentarea algoritmului si specificarea complexitatii acestuia in termeni de O(f(n)), 
+Este obligatorie comentarea algoritmului si specificarea complexitatii acestuia in termeni de O(f(n)),
 comentarea structurilor de date alese, precum si justificarea alegerii acestora.
 Este obligatorie exemplificarea efectului apelului functiilor implementate pe un exemplu ales.
 */
-
 
 #include<stdio.h>
 #include<string.h>
@@ -28,159 +27,134 @@ typedef struct agenda
 //swap special pentru quicksort
 void swap(agenda agende[], int low, int high)
 {
-    agenda temp;
-    temp = agende[low];
-    agende[low] = agende[high];
-    agende[high] = temp;
+	agenda temp;
+	temp = agende[low];
+	agende[low] = agende[high];
+	agende[high] = temp;
 }
 
-int findPivotmedian(agenda agende[], int low, int high)
-{
-    int mid = (low + high) / 2;
-    
-    if (strcmp(agende[low].nume, agende[mid].nume) > 0)
-    {
-        swap(agende, low, mid);
-    }
-    
-    if (strcmp(agende[low].nume, agende[high].nume) > 0)
-    {
-        swap(agende, low, high);
-    }
-    
-    if (strcmp(agende[mid].nume, agende[high].nume) > 0)
-    {
-        swap(agende, mid, high);
-    }
-    
-    return mid;
-}
-
-int partition(agenda agende[], int low, int high)
-{
-    int i, j, pivot;
-    i = low;
-    j = high;
-    pivot = findPivotmedian(agende, low, high);
-
-    while (i < j)
-    {
-        do {
-            i++;
-        } while (strcmp(agende[i].nume, agende[pivot].nume) < 0);
-
-        do {
-            j--;
-        } while (strcmp(agende[j].nume, agende[pivot].nume) > 0);
-
-        if (i < j)
-        {
-            swap(agende, i, j);
-        }
-    }
-    swap(agende, pivot, j);
-    return j;
-}
-
-void QuickSort(agenda agende[], int low, int high)
-{
-    int j;
-    if (low < high)
-    {
-        j = partition(agende, low, high);
-        QuickSort(agende, low, j);
-        QuickSort(agende, j + 1, high);
-    }
-}
-
-
-//implementare quicksort de la profa:
-/*void QuickSort(agenda agende[], int prim, int ultim)
+void quicksort(agenda agende[], int prim, int ultim)
 {
 	int stanga = prim + 1;
 	int dreapta = ultim;
-    int pivot = prim;
+	int pivot = prim;
 	while (stanga <= dreapta) //partitionare
 	{
 		while (stanga <= ultim && strcmp(agende[stanga].nume, agende[pivot].nume) < 0)
 		{
-            stanga++;
-        }
+			stanga++;
+		}
 		while (dreapta > prim && strcmp(agende[dreapta].nume, agende[pivot].nume) > 0)
 		{
-            dreapta--;
-        }
+			dreapta--;
+		}
 		if (stanga < dreapta)
 		{
-            swap(agende, stanga++ ,dreapta--);
-        }
+			swap(agende, stanga++, dreapta--);
+		}
 		else
 		{
-            stanga++;
-        }
+			stanga++;
+		}
 	}
 	//mutare pivot la locul sau final
 	swap(agende, dreapta, prim);
 	//apelurile recursive
 	if (prim < dreapta - 1)
-    {	
-        QuickSort(agende, prim, dreapta - 1);
-    }
+	{
+		quicksort(agende, prim, dreapta - 1);
+	}
 	if (dreapta + 1 < ultim)
 	{
-        QuickSort(agende, dreapta + 1, ultim);
-    }
-}*/
+		quicksort(agende, dreapta + 1, ultim);
+	}
+}
 
-// Functie pentru mutarea pe ultimele pozitii din vector a primelor doua persoane cu un venit mai mic de 1000
-void moveLowIncomeToEnd(agenda agende[], int N)
+
+void afiseazaAgende(agenda agende[], int N)
 {
-    int lowIncomeCount = 0;
+	int i;
+	for (i = 0; i < N; i++)
+	{
+		printf("Nume: %s, numar de telefon: %s, varsta: %d, venit: %d\n", agende[i].nume, 
+			agende[i].telefon, agende[i].an, agende[i].venit);
+	}
+	printf("\n");
+}
 
-    for (int i = 0; i < N && lowIncomeCount < 2; i++)
+void sortareAlfabetica30_40(agenda agende[], int N) 
+{
+    int pozPrim = 0, pozUltim = N - 1;
+
+    while (pozPrim <= pozUltim) 
     {
-        if (agende[i].venit < 1000)
+        while (pozPrim < N && (agende[pozPrim].an < 30 || agende[pozPrim].an > 40)) 
         {
-            swap(agende, i, N - lowIncomeCount - 1);
-            lowIncomeCount++;
+            pozPrim++;
         }
+        while (pozUltim >= 0 && (agende[pozUltim].an < 30 || agende[pozUltim].an > 40)) 
+        {
+            pozUltim--;
+        }
+        if (pozPrim < pozUltim) 
+        {
+            swap(agende, pozPrim++, pozUltim--);
+        } 
+        else 
+        {
+            pozPrim++;
+        }
+    }
+
+    if (pozUltim >= 0) 
+    {  // Verificare pentru a evita accesarea în afara limitelor
+        quicksort(agende, 0, pozUltim);   // Sortează doar segmentul cu vârsta între 30 și 40
     }
 }
 
+void mutareAgende(agenda agende[], int N)
+{
+	int pozPrim, pozUltim;
+	pozPrim = 0;
+	pozUltim = N - 1;
+	while (pozPrim <= pozUltim)
+	{
+		while (agende[pozPrim].venit < 1000)  //adica pe primele pozitii vreau sa fie cei cu venituri <1000
+		{
+			pozPrim++;
+		}
+		while (agende[pozUltim].venit > 1000)
+		{
+			pozUltim--;
+		}
+		if (pozPrim < pozUltim)
+		{
+			swap(agende, pozPrim++, pozUltim--);
+		}
+	}
+}
+
+
+
 int main(void)
 {
-	agenda agende[] = { {"Vera", "73547002", 35, 2200},
-						{"Sandra", "73007798", 37, 100},
-		                {"Ana", "79652820", 30, 400} };
-	int N, i;
+	agenda agende[] = { {"Vera", "2470252", 32, 200},
+						{"Sandra", "2936421", 34, 1500},
+						{"Bogdan", "8796856", 35, 300},
+						{"Anca", "49623234", 67, 4000},
+						{"Andrei", "40283471", 31, 590},
+	};
+	int N;
 	N = sizeof(agende) / sizeof(agende[0]);
+	printf("Lista de agende initiala: \n");
+	afiseazaAgende(agende, N);
 
-    // Afisam tabloul initial
-    printf("Tabloul initial:\n");
-    for (i = 0; i < N; i++) 
-	{
-        printf("%s\t%d\t%d\n", agende[i].nume, agende[i].an, agende[i].venit);
-    }
+	printf("Lista de agende sortata alfabetic: \n");
+	sortareAlfabetica30_40(agende, N);
+	afiseazaAgende(agende, N);
 
-    // Mutam pe ultimele pozitii din vector primele doua persoane cu un venit mai mic de 1000
-    moveLowIncomeToEnd(agende, N);
-
-	// Afisam tabloul dupa mutarea persoanelor cu venit mic
-    printf("\nTabloul dupa mutarea persoanelor cu venit mai mic de 1000:\n");
-    for (i = 0; i < N; i++) 
-	{
-        printf("%s\t%d\t%d\n", agende[i].nume, agende[i].an, agende[i].venit);
-    }
-
-    // Sortam eficient in ordine alfabetica persoanele cu varsta intre 30 si 40 de ani
-	QuickSort(agende, 0, N - 1);  //nu mi se specifica unde sa pozitionez persoanele care nu se incadreaza in acest interval de varsta, asa ca voi ordona toate persoanele alfabetic
-
-	// Afisam tabloul dupa sortarea persoanelor cu varsta intre 30 si 40 de ani
-    printf("\nTabloul dupa sortarea persoanelor cu varsta intre 30 si 40 de ani:\n");
-    for (i = 0; i < N; i++) 
-	{
-        printf("%s\t%d\t%d\n", agende[i].nume, agende[i].an, agende[i].venit);
-    }
-
+    printf("Lista de agende in care veniturile <1000 sunt prioritare: \n");
+    mutareAgende(agende, N);
+    afiseazaAgende(agende, N);
 	return 0;
 }
