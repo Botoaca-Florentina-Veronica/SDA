@@ -71,6 +71,21 @@ void heapsort(angajat angajati[], int n)
 		deplasare(angajati, 0, i - 1);		//se reface proprietatea de ansamblu
 	}
 }
+
+void insertion_sort(angajat angajati[], int n)
+{
+	int i, j;
+	angajat tmp;
+	for (i = 1; i < n; i++)
+	{
+		tmp = angajati[i];
+		for (j = i; (j > 0) && (strcmp(tmp.nume, angajati[j - 1].nume) < 0); j--)
+		{
+			angajati[j] = angajati[j - 1];
+		}
+		angajati[j] = tmp;
+	}
+}
 */
 
 
@@ -175,6 +190,7 @@ void sortareAlfabeticaSalariu(angajat angajati[], int N)
 		quicksort(angajati, 0, pozUltim);   // Sortează doar segmentul cu vârsta între 3000 și 6000
 	}
 
+	//insertion_sort(angajati, pozUltim + 1);
 	//heapsort(angajati, pozUltim + 1);
 	printf("\n");
 }
