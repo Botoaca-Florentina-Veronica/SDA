@@ -83,30 +83,16 @@ void adaugaStudentLaConferinta(conferinta_t* conferinta, const char* nume, const
 }
 
 
-conferinta_t *adaugaConferinta(conferinta_t *head, int ID, int data, const char *numeGazda) {
+conferinta_t *adaugaConferinta(conferinta_t *head, int ID, int data, const char *numeGazda) 
+{
     conferinta_t *conferintaNoua = (conferinta_t *)malloc(sizeof(conferinta_t));
     conferintaNoua->ID = ID;
     conferintaNoua->data = data;
     strncpy(conferintaNoua->numeGazda, numeGazda, 35);
     conferintaNoua->studenti = NULL;
     conferintaNoua->link = NULL;
-
-    // Daca nu exista conferinte, returneaza prima conferinta
-    if (head == NULL) 
-    {
-        return conferintaNoua;
-    } 
-    else 
-    {
-        // Altfel, gaseste ultima conferinta si adauga noua conferinta la sfarsitul listei
-        conferinta_t *conferintaPtr = head;
-        while (conferintaPtr->link != NULL) 
-        {
-            conferintaPtr = conferintaPtr->link;
-        }
-        conferintaPtr->link = conferintaNoua;
-        return head;
-    }
+    
+	return conferintaNoua;
 }
 
 
