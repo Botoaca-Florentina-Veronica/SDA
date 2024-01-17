@@ -174,6 +174,8 @@ void sortareAlfabeticaSalariu(angajat angajati[], int N)
 	{  // Verificare pentru a evita accesarea în afara limitelor
 		quicksort(angajati, 0, pozUltim);   // Sortează doar segmentul cu vârsta între 3000 și 6000
 	}
+
+	//heapsort(angajati, pozUltim + 1);
 	printf("\n");
 }
 
